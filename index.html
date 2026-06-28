@@ -17,7 +17,7 @@
       --muted: #64646c;        /* darkened for AA contrast on light bg */
       --muted-soft: #8a8a91;
       --accent: #00a877;       /* slightly deeper green for contrast */
-      --accent-blue: #0071e3;
+      --accent-blue: #3a3a3a;
       --border: #dcdcdc;
       --nav-h: 68px;
       --max-w: 1280px;
@@ -114,7 +114,7 @@
       background: var(--bg); transition: background .2s, border-color .2s, color .2s;
       white-space: nowrap;
     }
-    .nav-links a:hover { background: rgba(0,113,227,.06); border-color: rgba(0,113,227,.32); color: var(--accent-blue); }
+    .nav-links a:hover { background: rgba(58,58,58,.06); border-color: rgba(58,58,58,.32); color: var(--accent-blue); }
     .nav-links a.nav-ext { color: var(--muted); }
     .nav-links a.nav-ext:hover { color: var(--text); }
     @media (max-width: 640px) {
@@ -131,26 +131,27 @@
       padding: calc(var(--nav-h) + 72px) clamp(20px, 5vw, 64px) 64px;
       max-width: var(--max-w); margin: 0 auto;
     }
-    .hero-profile {
+    .profile-section {
       display: inline-flex;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       margin-bottom: 48px;
-      background: #ffffff;
       border-radius: 100px;
-      padding: 7px 18px 7px 7px;
+      padding: 10px 28px 10px 10px;
       width: fit-content;
     }
     .avatar {
-      width: 44px; height: 44px; border-radius: 50%;
+      width: 60px; height: 60px; border-radius: 50%;
+      overflow: hidden;
       background: var(--bg-alt);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 400; color: var(--muted);
-      letter-spacing: -1px; flex-shrink: 0;
+      flex-shrink: 0;
     }
-    .profile-info { display: flex; flex-direction: column; gap: 2px; }
-    .profile-title  { font-size: 12px; font-weight: 400; color: var(--text); }
-    .profile-status { font-size: 11px; color: var(--muted); }
+    .avatar img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .profile-info { display: flex; flex-direction: column; gap: 4px; }
+    .profile-title  { font-size: 15px; font-weight: 500; color: var(--text); }
+    .profile-status { font-size: 13px; color: var(--muted); }
 
     .hero-heading {
       font-size: clamp(44px, 8.5vw, 112px);
@@ -172,12 +173,19 @@
       font-size: clamp(14px, 1.35vw, 16px); color: var(--muted);
       max-width: 580px; line-height: 1.7; margin-bottom: 40px;
     }
-    .hero-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 36px; }
+    .hero-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 24px; }
+    .hero-stacks  { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+    .stack-chip {
+      font-size: 13px; font-weight: 400; letter-spacing: .3px;
+      color: var(--text); background: #fff;
+      border: 1.5px solid rgba(220,220,220,.4); padding: 13px 20px;
+      border-radius: 12px;
+    }
     .hero-bottom  { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
 
     .btn-cta {
       display: inline-flex; align-items: center; gap: 12px;
-      font-size: 13px; font-weight: 400; letter-spacing: .8px; text-transform: uppercase;
+      font-size: 13px; font-weight: 400; letter-spacing: .3px;
       color: var(--text); background: var(--bg);
       border: 1.5px solid var(--text); padding: 15px 24px;
       border-radius: 12px; text-decoration: none;
@@ -203,7 +211,7 @@
     /* ── SHARED ──────────────────────────── */
     .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 clamp(20px, 5vw, 64px); }
     .section-pad { padding-top: clamp(64px, 9vw, 100px); padding-bottom: clamp(64px, 9vw, 100px); }
-    .label { font-size: 11px; font-weight: 400; letter-spacing: 2.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    .label { font-size: 11px; font-weight: 500; letter-spacing: .4px; color: var(--accent); margin-bottom: 14px; }
     .section-h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 400; letter-spacing: -.035em; line-height: 1.05; color: var(--text); margin-bottom: clamp(36px, 5vw, 52px); }
 
     /* ── PROJECTS ────────────────────────── */
@@ -310,7 +318,7 @@
       padding: clamp(28px, 4vw, 44px) clamp(28px, 4vw, 48px);
       margin-bottom: 28px;
     }
-    .exp-counter-glow { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 14px; }
+    .exp-counter-glow { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; letter-spacing: .4px; color: rgba(255,255,255,.55); margin-bottom: 14px; }
     .exp-counter-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: blink 2.4s ease-in-out infinite; }
     .exp-counter-num { font-size: clamp(50px, 8vw, 82px); font-weight: 400; line-height: 1; letter-spacing: -3px; font-variant-numeric: tabular-nums; }
     .exp-counter-cap { font-size: 14px; color: rgba(255,255,255,.6); margin-top: 10px; }
@@ -359,7 +367,7 @@
 
     /* right column — content */
     .tl-main { display: flex; flex-direction: column; align-items: flex-start; height: 100%; }
-    .tl-co   { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); }
+    .tl-co   { font-size: 11px; letter-spacing: .3px; color: var(--muted-soft); }
     .tl-role { font-size: clamp(19px, 2.1vw, 23px); font-weight: 400; color: var(--text); letter-spacing: -.5px; line-height: 1.2; margin: 5px 0 0; }
     .tl-desc { font-size: 13.5px; color: var(--muted); line-height: 1.65; margin-top: 11px; max-width: 64ch; }
     .tl-note { display: inline-block; font-size: 12px; color: var(--accent); margin-top: 12px; padding: 4px 11px; border-radius: 100px; background: rgba(0,168,119,.1); }
@@ -407,7 +415,7 @@
       border: 1px solid var(--border); border-radius: 100px;
       transition: color .2s, border-color .2s, background .2s;
     }
-    .chip:hover { color: var(--accent-blue); border-color: rgba(0,113,227,.35); background: rgba(0,113,227,.05); }
+    .chip:hover { color: var(--accent-blue); border-color: rgba(58,58,58,.35); background: rgba(58,58,58,.05); }
 
     /* ── FOOTER ──────────────────────────── */
     footer {
@@ -436,8 +444,10 @@
 
   <!-- HERO -->
   <section id="hero">
-    <div class="hero-profile reveal reveal--sm" style="--reveal-delay:60ms">
-      <div class="avatar">BB</div>
+    <div class="profile-section reveal reveal--sm" style="--reveal-delay:60ms">
+      <div class="avatar">
+        <img src="assets/Profile/Profile.png" alt="Bernardo Blom" />
+      </div>
       <div class="profile-info">
         <p class="profile-title">Designer &amp; B2B Marketing</p>
         <p class="profile-status">Currently at Clifton Larson Allen (CLA)</p>
@@ -453,7 +463,14 @@
 
     <hr class="hero-divider reveal reveal--sm" style="--reveal-delay:300ms" />
 
-    <div class="hero-bottom reveal reveal--sm" style="--reveal-delay:360ms">
+    <div class="hero-stacks reveal reveal--sm" style="--reveal-delay:340ms">
+      <span class="stack-chip">Brand Design</span>
+      <span class="stack-chip">Art Direction</span>
+      <span class="stack-chip">UX/UI Design</span>
+      <span class="stack-chip">Marketing B2B</span>
+    </div>
+
+    <div class="hero-bottom reveal reveal--sm" style="--reveal-delay:410ms">
       <a href="#work" class="btn-cta">
         View Work
         <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
