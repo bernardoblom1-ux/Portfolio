@@ -143,11 +143,13 @@
     .avatar {
       width: 60px; height: 60px; border-radius: 50%;
       overflow: hidden;
-      background: var(--bg-alt);
+      background: var(--bg);
       flex-shrink: 0;
+      padding: 4px;
     }
     .avatar img {
       width: 100%; height: 100%; object-fit: cover; display: block;
+      border-radius: 50%;
     }
     .profile-info { display: flex; flex-direction: column; gap: 4px; }
     .profile-title  { font-size: 15px; font-weight: 500; color: var(--text); }
@@ -298,6 +300,8 @@
     @media (max-width: 640px) {
       .client-cell { width: 150px; height: 84px; }
       .client-logo { max-width: 98px; max-height: 36px; }
+      .clients-track--ltr { animation-duration: 28s; }
+      .clients-track--rtl { animation-duration: 28s; }
     }
     @media (prefers-reduced-motion: reduce) {
       .clients-track { animation: none; flex-wrap: wrap; justify-content: center; }
@@ -372,13 +376,17 @@
     .tl-desc { font-size: 13.5px; color: var(--muted); line-height: 1.65; margin-top: 11px; max-width: 64ch; }
     .tl-note { display: inline-block; font-size: 12px; color: var(--accent); margin-top: 12px; padding: 4px 11px; border-radius: 100px; background: rgba(0,168,119,.1); }
     .tl-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 11px; font-weight: 500; letter-spacing: .2px;
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 500; letter-spacing: .2px; line-height: 1.35;
       color: var(--text); background: #fff;
       border: 1px solid var(--border); border-radius: 100px;
-      padding: 4px 12px 4px 9px; margin-top: 11px;
+      padding: 6px 14px 6px 10px; margin-top: 12px;
+      max-width: 100%;
     }
-    .tl-badge svg { width: 13px; height: 13px; color: var(--accent); flex-shrink: 0; }
+    .tl-badge svg { width: 13px; height: 13px; color: var(--accent); flex-shrink: 0; align-self: center; }
+    @media (max-width: 700px) {
+      .tl-badge { font-size: 10.5px; padding: 5px 12px 5px 9px; gap: 6px; }
+    }
     .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 16px; align-self: stretch; }
     .tl-tag  { font-size: 11px; padding: 4px 10px; border-radius: 6px; background: var(--bg-alt); color: var(--muted); }
 
@@ -547,7 +555,7 @@
             <span class="tl-co">CliftonLarsonAllen</span>
             <h3 class="tl-role">Marketing Analyst</h3>
             <span class="tl-badge">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 4.84 5.34.78-3.86 3.77.91 5.32L12 14.98l-4.78 2.51.91-5.32L4.27 7.62l5.34-.78L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               Among the world&rsquo;s top audit &amp; consulting firms
             </span>
             <p class="tl-desc">Led GTM for 2 B2B SaaS products (HR &amp; Finance); built end-to-end funnels for acquisition and conversion; produced strategic materials used by leadership.</p>
@@ -608,7 +616,7 @@
             <span class="tl-co">Deloitte</span>
             <h3 class="tl-role">Marketing Analyst</h3>
             <span class="tl-badge">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 4.84 5.34.78-3.86 3.77.91 5.32L12 14.98l-4.78 2.51.91-5.32L4.27 7.62l5.34-.78L12 2z"/></svg>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
               Big Four firm
             </span>
             <p class="tl-desc">Standardized brand identity across proposals and case materials used by 100+ consultants; delivered high-exposure C-level decks aligned with global positioning.</p>
@@ -814,7 +822,6 @@
         <div class="card-body">
           <p class="card-year">${p.year}</p>
           <p class="card-name">${p.title}</p>
-          <p class="card-cat">${p.cat}</p>
         </div>`;
       grid.appendChild(card);
     });
@@ -888,7 +895,6 @@
       const DIR = 'assets/clients /';
       // {f: file, name, invert: true for white/negative logos}
       const CLIENTS = [
-        { f: 'Microsoft-logo_rgb_c-gray.png', name: 'Microsoft', scale: 1.4 },
         { f: 'Principal_h_cor_RGB.png', name: 'Principal' },
         { f: 'eletrobras-logo-png_seeklogo-530206.png', name: 'Eletrobras', scale: 2.1 },
         { f: 'rumo-seeklogo.png', name: 'Rumo' },
