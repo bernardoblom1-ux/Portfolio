@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bernardo Blom — Designer & B2B Marketing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f2f2f2;
+      --bg-alt: #e8e8e8;
+      --text: #0d0d0d;
+      --muted: #64646c;        /* darkened for AA contrast on light bg */
+      --muted-soft: #8a8a91;
+      --accent: #00a877;       /* slightly deeper green for contrast */
+      --accent-blue: #0071e3;
+      --border: #dcdcdc;
+      --nav-h: 68px;
+      --max-w: 1280px;
+      --r: 14px;
+      --r-lg: 20px;
+      --ease: cubic-bezier(.22,.61,.36,1);
+      --shadow-card: 0 20px 56px rgba(0,0,0,.09);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    img { max-width: 100%; -webkit-user-drag: none; user-select: none; }
+
+    /* anchored sections clear the fixed nav */
+    #work, #clients, #experience, #contact { scroll-margin-top: var(--nav-h); }
+
+    /* accessibility & polish */
+    ::selection { background: rgba(0,113,227,.16); color: var(--text); }
+    :focus-visible { outline: 2px solid var(--accent-blue); outline-offset: 3px; border-radius: 3px; }
+    :focus:not(:focus-visible) { outline: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+
+    /* ── SCROLL REVEAL ───────────────────── */
+    /* default = visible (no-JS fallback); hidden state only applies once JS is on */
+    html.js .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity .8s var(--ease), transform .8s var(--ease);
+      transition-delay: var(--reveal-delay, 0ms);
+      will-change: opacity, transform;
+    }
+    html.js .reveal--sm { transform: translateY(14px); }
+    html.js .reveal--scale { transform: translateY(20px) scale(.97); }
+    html.js .reveal.in { opacity: 1; transform: none; }
+    /* cards keep a snappy transform so reveal + hover-lift both feel right */
+    html.js .card.reveal {
+      transition: opacity .7s var(--ease), transform .45s var(--ease), box-shadow .25s;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html.js .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ── NAV ─────────────────────────────── */
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: var(--nav-h);
+      background: rgba(242,242,242,.88);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid transparent;
+      z-index: 100;
+      transition: border-color .3s, box-shadow .3s;
+    }
+    /* inner aligns with the same max-width container as every section */
+    .nav-inner {
+      max-width: var(--max-w);
+      height: 100%;
+      margin: 0 auto;
+      padding: 0 clamp(20px, 5vw, 64px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    nav.scrolled { border-color: var(--border); box-shadow: 0 1px 20px rgba(0,0,0,.05); }
+    .nav-logo {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 13px; font-weight: 400; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 8px; list-style: none; }
+    .nav-links a {
+      font-size: 13px; font-weight: 500; color: var(--text);
+      text-decoration: none; padding: 7px 16px;
+      border-radius: 100px; border: 1px solid var(--border);
+      background: var(--bg); transition: background .2s, border-color .2s, color .2s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover { background: rgba(0,113,227,.06); border-color: rgba(0,113,227,.32); color: var(--accent-blue); }
+    .nav-links a.nav-ext { color: var(--muted); }
+    .nav-links a.nav-ext:hover { color: var(--text); }
+    @media (max-width: 640px) {
+      .nav-links { gap: 6px; }
+      .nav-links a { font-size: 12px; padding: 6px 12px; }
+    }
+    @media (max-width: 420px) { .nav-links .nav-ext { display: none; } }
+
+    /* ── HERO ────────────────────────────── */
+    #hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: calc(var(--nav-h) + 72px) clamp(20px, 5vw, 64px) 64px;
+      max-width: var(--max-w); margin: 0 auto;
+    }
+    .hero-profile {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 48px;
+      background: #ffffff;
+      border-radius: 100px;
+      padding: 7px 18px 7px 7px;
+      width: fit-content;
+    }
+    .avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--bg-alt);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 400; color: var(--muted);
+      letter-spacing: -1px; flex-shrink: 0;
+    }
+    .profile-info { display: flex; flex-direction: column; gap: 2px; }
+    .profile-title  { font-size: 12px; font-weight: 400; color: var(--text); }
+    .profile-status { font-size: 11px; color: var(--muted); }
+
+    .hero-heading {
+      font-size: clamp(44px, 8.5vw, 112px);
+      font-weight: 400; line-height: .92;
+      letter-spacing: -.04em; margin-bottom: 28px;
+    }
+    .hero-heading .line-primary { display: block; color: var(--text); min-height: .92em; }
+    .hero-heading .line-muted   { display: block; color: var(--accent-blue); min-height: .92em; }
+
+    .type-cursor {
+      display: inline-block; width: 2px; height: .72em;
+      background: currentColor; margin-left: 4px;
+      vertical-align: baseline; position: relative; top: .06em; border-radius: 1px;
+    }
+    .type-cursor.blink { animation: cursorBlink .75s step-end infinite; }
+    @keyframes cursorBlink { 0%,100% { opacity:1; } 50% { opacity:0; } }
+
+    .hero-sub {
+      font-size: clamp(14px, 1.35vw, 16px); color: var(--muted);
+      max-width: 580px; line-height: 1.7; margin-bottom: 40px;
+    }
+    .hero-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 36px; }
+    .hero-bottom  { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+
+    .btn-cta {
+      display: inline-flex; align-items: center; gap: 12px;
+      font-size: 13px; font-weight: 400; letter-spacing: .8px; text-transform: uppercase;
+      color: var(--text); background: var(--bg);
+      border: 1.5px solid var(--text); padding: 15px 24px;
+      border-radius: 12px; text-decoration: none;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .btn-cta:hover { background: var(--accent-blue); border-color: var(--accent-blue); color: #fff; }
+    .btn-cta svg { transition: transform .2s; }
+    .btn-cta:hover svg { transform: translateX(3px); }
+
+    .hero-avail { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: var(--muted); line-height: 1.45; max-width: 160px; }
+    .avail-dot  { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 4px; animation: blink 2.4s ease-in-out infinite; }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:.25; } }
+
+    .hero-location { display: flex; align-items: center; gap: 8px; margin-left: auto; font-size: 12px; font-weight: 500; color: var(--muted); letter-spacing: .3px; }
+    .loc-bars { display: flex; align-items: flex-end; gap: 2px; height: 16px; }
+    .loc-bars span { width: 3px; background: var(--muted); border-radius: 2px; opacity: .55; }
+    .loc-bars span:nth-child(1) { height: 5px; }
+    .loc-bars span:nth-child(2) { height: 9px; }
+    .loc-bars span:nth-child(3) { height: 14px; }
+    .loc-bars span:nth-child(4) { height: 10px; }
+    @media (max-width: 480px) { .hero-location { display: none; } }
+
+    /* ── SHARED ──────────────────────────── */
+    .wrap { max-width: var(--max-w); margin: 0 auto; padding: 0 clamp(20px, 5vw, 64px); }
+    .section-pad { padding-top: clamp(64px, 9vw, 100px); padding-bottom: clamp(64px, 9vw, 100px); }
+    .label { font-size: 11px; font-weight: 400; letter-spacing: 2.2px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+    .section-h2 { font-size: clamp(28px, 4vw, 44px); font-weight: 400; letter-spacing: -.035em; line-height: 1.05; color: var(--text); margin-bottom: clamp(36px, 5vw, 52px); }
+
+    /* ── PROJECTS ────────────────────────── */
+    #work { padding-top: clamp(64px, 9vw, 100px); padding-bottom: clamp(64px, 9vw, 100px); }
+
+    .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+      cursor: pointer; border-radius: var(--r); overflow: hidden;
+      background: var(--bg-alt); border: 1px solid var(--border);
+      text-decoration: none; display: block;
+      transition: transform .25s cubic-bezier(.22,.61,.36,1), box-shadow .25s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 20px 56px rgba(0,0,0,.09); }
+    .card-thumb-wrap { width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--bg-alt); }
+    .card-thumb { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s cubic-bezier(.22,.61,.36,1); }
+    .card:hover .card-thumb { transform: scale(1.04); }
+    .card-thumb.broken { opacity: 0; }
+    .card-body   { padding: 16px 18px 18px; }
+    .card-year   { font-size: 11px; font-weight: 500; color: var(--muted); margin-bottom: 3px; }
+    .card-name   { font-size: 14px; font-weight: 400; color: var(--text); letter-spacing: -.3px; line-height: 1.2; }
+    .card-cat    { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    /* card slideshow */
+    .slideshow-wrap { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--bg-alt); }
+    .slide-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      opacity: 0; transition: opacity .7s ease;
+    }
+    .slide-img.active { opacity: 1; }
+
+    /* ── CLIENTS MARQUEE ─────────────────── */
+    #clients { padding-top: clamp(60px, 8vw, 92px); padding-bottom: clamp(60px, 8vw, 92px); overflow: hidden; }
+    .clients-head { text-align: center; margin-bottom: 46px; }
+    .clients-head .label { display: block; }
+    .clients-head .section-h2 { margin-bottom: 12px; }
+    .clients-sub { font-size: 14px; color: var(--muted); max-width: 460px; margin: 0 auto; line-height: 1.6; }
+
+    .clients-rows { display: flex; flex-direction: column; gap: 16px; }
+    .clients-marquee {
+      position: relative;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+              mask-image: linear-gradient(90deg, transparent 0, #000 7%, #000 93%, transparent 100%);
+    }
+    .clients-track { display: flex; width: max-content; align-items: center; }
+    .clients-track--ltr { animation: clientsLeft 48s linear infinite; }
+    .clients-track--rtl { animation: clientsRight 48s linear infinite; }
+    .clients-marquee:hover .clients-track { animation-play-state: paused; }
+    @keyframes clientsLeft  { from { transform: translateX(0); }     to { transform: translateX(-50%); } }
+    @keyframes clientsRight { from { transform: translateX(-50%); }  to { transform: translateX(0); } }
+
+    .client-cell {
+      flex-shrink: 0;
+      width: 244px; height: 132px;
+      margin-right: 18px;
+      display: grid; place-items: center;
+      overflow: hidden;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      transition: border-color .3s, box-shadow .3s, transform .3s;
+    }
+    .client-cell:hover {
+      border-color: #cdcdcd;
+      box-shadow: 0 12px 34px rgba(0,0,0,.07);
+      transform: translateY(-3px);
+    }
+    .client-logo {
+      max-width: 152px; max-height: 56px;
+      width: auto; height: auto;
+      object-fit: contain;
+      filter: grayscale(1);
+      opacity: .62;
+      transition: opacity .3s ease;
+    }
+    .client-cell:hover .client-logo { opacity: 1; }
+    /* white / negative logos → invert so they read as gray on white cards */
+    .client-logo--invert { filter: grayscale(1) invert(1); }
+
+    @media (max-width: 640px) {
+      .client-cell { width: 150px; height: 84px; }
+      .client-logo { max-width: 98px; max-height: 36px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .clients-track { animation: none; flex-wrap: wrap; justify-content: center; }
+    }
+
+    /* ── EXPERIENCE / TIMELINE ───────────── */
+    #experience { background: var(--bg-alt); }
+    .exp-h2 { display: inline-flex; align-items: center; gap: 14px; }
+    .exp-h2 svg { color: var(--accent); flex-shrink: 0; }
+
+    /* day-counter banner (full-width horizontal dark card) */
+    .exp-counter {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 28px; flex-wrap: wrap;
+      background: radial-gradient(150% 200% at 0% 0%, #1f1f1f 0%, #0d0d0d 60%);
+      color: #fff;
+      border-radius: var(--r-lg);
+      padding: clamp(28px, 4vw, 44px) clamp(28px, 4vw, 48px);
+      margin-bottom: 28px;
+    }
+    .exp-counter-glow { display: inline-flex; align-items: center; gap: 9px; font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; color: rgba(255,255,255,.55); margin-bottom: 14px; }
+    .exp-counter-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); animation: blink 2.4s ease-in-out infinite; }
+    .exp-counter-num { font-size: clamp(50px, 8vw, 82px); font-weight: 400; line-height: 1; letter-spacing: -3px; font-variant-numeric: tabular-nums; }
+    .exp-counter-cap { font-size: 14px; color: rgba(255,255,255,.6); margin-top: 10px; }
+    .exp-counter-side { font-size: 13px; color: rgba(255,255,255,.5); text-align: right; line-height: 1.6; max-width: 220px; }
+
+    /* vertical timeline with full-width horizontal cards */
+    .tl { position: relative; padding-left: 34px; display: grid; gap: 14px; grid-auto-rows: 1fr; }
+    .tl::before {
+      content: ''; position: absolute;
+      left: 5px; top: 10px; bottom: 10px;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), var(--border) 90px, var(--border));
+    }
+    .tl-card {
+      position: relative;
+      display: grid;
+      grid-template-columns: 210px 1fr;
+      gap: clamp(20px, 4vw, 52px);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 26px clamp(24px, 3vw, 36px);
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .tl-card:hover { border-color: #cdcdcd; box-shadow: var(--shadow-card); }
+    .tl-card::before {
+      content: ''; position: absolute;
+      left: -34px; top: 31px;
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--bg-alt); border: 1.5px solid #bdbdbd;
+      transition: border-color .3s, background .3s;
+    }
+    .tl-card:hover::before { border-color: var(--accent-blue); }
+    .tl-card--now::before {
+      background: var(--accent); border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(0,168,119,.14);
+    }
+
+    /* left column — when */
+    .tl-when { display: flex; flex-direction: column; gap: 5px; }
+    .tl-year { font-size: 19px; color: var(--text); letter-spacing: -.3px; font-variant-numeric: tabular-nums; }
+    .tl-year--now { color: var(--accent); display: inline-flex; align-items: center; gap: 7px; }
+    .tl-year--now::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: blink 2.4s ease-in-out infinite; }
+    .tl-period { font-size: 12px; color: var(--muted); }
+    .tl-place  { font-size: 12px; color: var(--muted-soft); }
+
+    /* right column — content */
+    .tl-main { display: flex; flex-direction: column; align-items: flex-start; height: 100%; }
+    .tl-co   { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); }
+    .tl-role { font-size: clamp(19px, 2.1vw, 23px); font-weight: 400; color: var(--text); letter-spacing: -.5px; line-height: 1.2; margin: 5px 0 0; }
+    .tl-desc { font-size: 13.5px; color: var(--muted); line-height: 1.65; margin-top: 11px; max-width: 64ch; }
+    .tl-note { display: inline-block; font-size: 12px; color: var(--accent); margin-top: 12px; padding: 4px 11px; border-radius: 100px; background: rgba(0,168,119,.1); }
+    .tl-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 500; letter-spacing: .2px;
+      color: var(--text); background: #fff;
+      border: 1px solid var(--border); border-radius: 100px;
+      padding: 4px 12px 4px 9px; margin-top: 11px;
+    }
+    .tl-badge svg { width: 13px; height: 13px; color: var(--accent); flex-shrink: 0; }
+    .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 16px; align-self: stretch; }
+    .tl-tag  { font-size: 11px; padding: 4px 10px; border-radius: 6px; background: var(--bg-alt); color: var(--muted); }
+
+    @media (max-width: 700px) {
+      .tl { padding-left: 28px; grid-auto-rows: auto; }
+      .tl-card { grid-template-columns: 1fr; gap: 14px; padding: 22px 22px; }
+      .tl-card::before { left: -28px; top: 27px; }
+      .tl-when { flex-flow: row wrap; align-items: baseline; gap: 4px 14px; }
+      .tl-tags { padding-top: 4px; }
+      .exp-counter-side { text-align: left; }
+    }
+
+    /* reveal: keep snappy hover transitions for timeline cards */
+    html.js .tl-card.reveal {
+      transition: opacity .7s var(--ease), transform .7s var(--ease), border-color .3s, box-shadow .3s;
+    }
+
+    /* ── CONTACT ─────────────────────────── */
+    #contact { text-align: center; }
+    .contact-email {
+      display: inline-block;
+      font-size: clamp(20px, 3.5vw, 44px); font-weight: 400;
+      letter-spacing: clamp(-1px, -.03em, -2px);
+      color: var(--text); text-decoration: none;
+      border-bottom: 2px solid var(--accent); padding-bottom: 4px;
+      margin-bottom: 36px; transition: color .2s;
+    }
+    .contact-email:hover { color: var(--accent); }
+    .contact-chips { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 400; color: var(--muted);
+      text-decoration: none; padding: 9px 18px;
+      border: 1px solid var(--border); border-radius: 100px;
+      transition: color .2s, border-color .2s, background .2s;
+    }
+    .chip:hover { color: var(--accent-blue); border-color: rgba(0,113,227,.35); background: rgba(0,113,227,.05); }
+
+    /* ── FOOTER ──────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px clamp(20px, 5vw, 64px);
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: var(--max-w); margin: 0 auto;
+    }
+    footer p { font-size: 13px; color: var(--muted); }
+  </style>
+  <script>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Bernardo Blom</a>
+      <ul class="nav-links">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="https://www.linkedin.com/in/bernardo-blom/" target="_blank" rel="noopener" class="nav-ext">LinkedIn ↗</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-profile reveal reveal--sm" style="--reveal-delay:60ms">
+      <div class="avatar">BB</div>
+      <div class="profile-info">
+        <p class="profile-title">Designer &amp; B2B Marketing</p>
+        <p class="profile-status">Currently at Clifton Larson Allen (CLA)</p>
+      </div>
+    </div>
+
+    <h1 class="hero-heading reveal" style="--reveal-delay:140ms">
+      <span class="line-primary" id="type-line1"></span>
+      <span class="line-muted"   id="type-line2"></span>
+    </h1>
+
+    <p class="hero-sub reveal reveal--sm" style="--reveal-delay:240ms">A creative and assertive process for entrepreneurs, startups and innovative companies to build a strong presence — clear message, confident aesthetic.</p>
+
+    <hr class="hero-divider reveal reveal--sm" style="--reveal-delay:300ms" />
+
+    <div class="hero-bottom reveal reveal--sm" style="--reveal-delay:360ms">
+      <a href="#work" class="btn-cta">
+        View Work
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path d="M1.5 6.5h10M6.5 1.5l5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <div class="hero-avail">
+        <span class="avail-dot"></span>
+        <span>Available for new projects</span>
+      </div>
+      <div class="hero-location">
+        <div class="loc-bars"><span></span><span></span><span></span><span></span></div>
+        <span>São José dos Campos &bull; Brazil</span>
+        <span id="hero-clock" style="font-variant-numeric:tabular-nums;"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <div id="work" class="wrap section-pad">
+    <p class="label reveal reveal--sm">Selected Work</p>
+    <h2 class="section-h2 reveal" style="--reveal-delay:80ms">Projects</h2>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <!-- CLIENTS -->
+  <div id="clients">
+    <div class="wrap clients-head">
+      <p class="label reveal reveal--sm">Trusted by</p>
+      <h2 class="section-h2 reveal" style="--reveal-delay:80ms">Brands I&rsquo;ve helped grow</h2>
+      <p class="clients-sub reveal reveal--sm" style="--reveal-delay:160ms">From global enterprises to fast-moving startups across finance, energy, tech and agribusiness.</p>
+    </div>
+    <div class="clients-rows">
+      <div class="clients-marquee">
+        <div class="clients-track clients-track--ltr" id="clients-row1"></div>
+      </div>
+      <div class="clients-marquee">
+        <div class="clients-track clients-track--rtl" id="clients-row2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE -->
+  <div id="experience" class="section-pad">
+    <div class="wrap">
+      <p class="label reveal reveal--sm">Career</p>
+      <h2 class="section-h2 exp-h2 reveal" style="--reveal-delay:80ms">
+        Experience
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+          <path d="M7 7h10v10M17 7L7 17" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </h2>
+
+      <!-- day counter banner -->
+      <div class="exp-counter reveal">
+        <div>
+          <span class="exp-counter-glow"><span class="exp-counter-dot"></span>Since 2018, still counting</span>
+          <div class="exp-counter-num" id="tl-days">—</div>
+          <p class="exp-counter-cap">days building projects that matter.</p>
+        </div>
+        <p class="exp-counter-side">From audiovisual sets to B2B SaaS go-to-market — a path through design, brand and marketing.</p>
+      </div>
+
+      <!-- timeline -->
+      <div class="tl">
+
+        <article class="tl-card tl-card--now reveal reveal--sm">
+          <div class="tl-when">
+            <span class="tl-year tl-year--now">Now</span>
+            <span class="tl-period">Sep 2025 — Present</span>
+            <span class="tl-place">São Paulo · Hybrid</span>
+          </div>
+          <div class="tl-main">
+            <span class="tl-co">CliftonLarsonAllen</span>
+            <h3 class="tl-role">Marketing Analyst</h3>
+            <span class="tl-badge">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 4.84 5.34.78-3.86 3.77.91 5.32L12 14.98l-4.78 2.51.91-5.32L4.27 7.62l5.34-.78L12 2z"/></svg>
+              Among the world&rsquo;s top audit &amp; consulting firms
+            </span>
+            <p class="tl-desc">Led GTM for 2 B2B SaaS products (HR &amp; Finance); built end-to-end funnels for acquisition and conversion; produced strategic materials used by leadership.</p>
+            <div class="tl-tags">
+              <span class="tl-tag">B2B GTM</span>
+              <span class="tl-tag">Sales Funnels</span>
+              <span class="tl-tag">Brand Comms</span>
+              <span class="tl-tag">Landing Pages</span>
+              <span class="tl-tag">Event Marketing</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="tl-card reveal reveal--sm">
+          <div class="tl-when">
+            <span class="tl-year">2025</span>
+            <span class="tl-period">Jul 2025 — Sep 2025</span>
+            <span class="tl-place">São José dos Campos · On-site</span>
+          </div>
+          <div class="tl-main">
+            <span class="tl-co">Grupo Kaza</span>
+            <h3 class="tl-role">Art Director &amp; Marketing Analyst</h3>
+            <div class="tl-tags">
+              <span class="tl-tag">Brand Identity</span>
+              <span class="tl-tag">US Expansion</span>
+              <span class="tl-tag">Visual Storytelling</span>
+              <span class="tl-tag">Brand Guidelines</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="tl-card reveal reveal--sm">
+          <div class="tl-when">
+            <span class="tl-year">2024</span>
+            <span class="tl-period">Jan 2024 — Jan 2026</span>
+            <span class="tl-place">Freelance</span>
+          </div>
+          <div class="tl-main">
+            <span class="tl-co">Tecnoly</span>
+            <h3 class="tl-role">Design Advisor</h3>
+            <p class="tl-note">R$1.5M+ exit</p>
+            <div class="tl-tags">
+              <span class="tl-tag">GTM Strategy</span>
+              <span class="tl-tag">Brand Positioning</span>
+              <span class="tl-tag">SaaS Go-to-Market</span>
+              <span class="tl-tag">Visual Identity</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="tl-card reveal reveal--sm">
+          <div class="tl-when">
+            <span class="tl-year">2024</span>
+            <span class="tl-period">Jan 2024 — May 2025</span>
+            <span class="tl-place">São Paulo · Hybrid</span>
+          </div>
+          <div class="tl-main">
+            <span class="tl-co">Deloitte</span>
+            <h3 class="tl-role">Marketing Analyst</h3>
+            <span class="tl-badge">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.39 4.84 5.34.78-3.86 3.77.91 5.32L12 14.98l-4.78 2.51.91-5.32L4.27 7.62l5.34-.78L12 2z"/></svg>
+              Big Four firm
+            </span>
+            <p class="tl-desc">Standardized brand identity across proposals and case materials used by 100+ consultants; delivered high-exposure C-level decks aligned with global positioning.</p>
+            <div class="tl-tags">
+              <span class="tl-tag">Strategic Decks</span>
+              <span class="tl-tag">Thought Leadership</span>
+              <span class="tl-tag">C-level Materials</span>
+              <span class="tl-tag">Event Design</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="tl-card reveal reveal--sm">
+          <div class="tl-when">
+            <span class="tl-year">2023</span>
+            <span class="tl-period">Oct 2023 — Jan 2024</span>
+            <span class="tl-place">São José dos Campos · Hybrid</span>
+          </div>
+          <div class="tl-main">
+            <span class="tl-co">Agência V10 Digital</span>
+            <h3 class="tl-role">Marketing Analyst</h3>
+            <div class="tl-tags">
+              <span class="tl-tag">Branding</span>
+              <span class="tl-tag">Creative Direction</span>
+              <span class="tl-tag">Healthcare Design</span>
+              <span class="tl-tag">Paid Traffic</span>
+              <span class="tl-tag">Social Media</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="tl-card reveal reveal--sm">
+          <div class="tl-when">
+            <span class="tl-year">2023</span>
+            <span class="tl-period">May 2023 — Sep 2023</span>
+            <span class="tl-place">São José dos Campos · On-site</span>
+          </div>
+          <div class="tl-main">
+            <span class="tl-co">abaré mkt&amp;tech</span>
+            <h3 class="tl-role">Junior Marketing Analyst</h3>
+            <div class="tl-tags">
+              <span class="tl-tag">UX Design</span>
+              <span class="tl-tag">UI Design</span>
+              <span class="tl-tag">Product Design</span>
+              <span class="tl-tag">Interface Design</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="tl-card reveal reveal--sm">
+          <div class="tl-when">
+            <span class="tl-year">2018</span>
+            <span class="tl-period">Jan 2018 — Dec 2022</span>
+            <span class="tl-place">Volta Redonda · On-site</span>
+          </div>
+          <div class="tl-main">
+            <span class="tl-co">Calino Produções</span>
+            <h3 class="tl-role">Creative Assistant</h3>
+            <div class="tl-tags">
+              <span class="tl-tag">Audiovisual</span>
+              <span class="tl-tag">Wedding Film</span>
+              <span class="tl-tag">Scriptwriting</span>
+              <span class="tl-tag">Video Editing</span>
+              <span class="tl-tag">Post-production</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div id="contact" class="wrap section-pad" style="text-align:center;">
+    <p class="label reveal reveal--sm">Get in touch</p>
+    <h2 class="section-h2 reveal" style="margin-bottom:24px; --reveal-delay:80ms">Let&rsquo;s Talk</h2>
+    <a href="mailto:blomguim@icloud.com" class="contact-email reveal" style="--reveal-delay:160ms">blomguim@icloud.com</a>
+    <div class="contact-chips reveal reveal--sm" style="--reveal-delay:240ms">
+      <a href="https://www.linkedin.com/in/bernardo-blom/" target="_blank" rel="noopener" class="chip">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2026 Bernardo Blom</p>
+    <p>S&atilde;o Jos&eacute; dos Campos &mdash; SP</p>
+  </footer>
+
+  <script>
+    function ep(raw) {
+      if (raw.startsWith('http')) return raw;
+      return raw.split('/').map(encodeURIComponent).join('/');
+    }
+
+    const PROJECTS = [
+      {
+        slug: "latam-airlines",
+        title: "LATAM Airlines",
+        year: "2026", cat: "Brand & Marketing",
+        thumb: "assets/Projects/latam /Prancheta 1.png",
+        slides: [
+          "assets/Projects/latam /Prancheta 1.png",
+          "assets/Projects/latam /Prancheta 2.png",
+          "assets/Projects/latam /Prancheta 3.png",
+          "assets/Projects/latam /Prancheta 4.png",
+          "assets/Projects/latam /Prancheta 5.png",
+          "assets/Projects/latam /Prancheta 6.png",
+          "assets/Projects/latam /Prancheta 7.png"
+        ]
+      },
+      {
+        slug: "latam-ui-design",
+        title: "LATAM Airlines — UI Design",
+        year: "2025", cat: "UI Design",
+        thumb: "assets/Projects/LATAM airlines UI Design/500fc013-2c1f-4a28-85bc-b31646df5b29_rw_1920.png"
+      },
+      {
+        slug: "essenza",
+        title: "Essenza",
+        year: "2025", cat: "Brand Identity",
+        thumb: "assets/Projects/essenza/01-thumbnail.png"
+      },
+      {
+        slug: "sismad",
+        title: "SISMAD",
+        year: "2025", cat: "B2B Marketing",
+        thumb: "assets/Projects/sismad/01-thumbnail.png"
+      },
+      {
+        slug: "lme-incorporadora",
+        title: "LME Incorporadora",
+        year: "2025", cat: "Real Estate Branding",
+        thumb: "assets/Projects/lme-incorporadora/48aa3dfe-050e-4601-b45e-86828a7bdbd2_rw_1920.png"
+      },
+      {
+        slug: "tecnoly",
+        title: "Tecnoly",
+        year: "2025", cat: "Technology Branding",
+        thumb: "assets/Projects/tecnoly/01-thumbnail.gif"
+      },
+      {
+        slug: "viacel",
+        title: "Viacel",
+        year: "2025", cat: "Visual Identity",
+        thumb: "assets/Projects/viacel/behance_Prancheta 1 cópia 3.png"
+      },
+      {
+        slug: "safeway",
+        title: "Safeway",
+        year: "2025", cat: "SaaS · Road Safety",
+        thumb: "assets/Projects/Safeway/Title 1.gif"
+      },
+      {
+        slug: "liber",
+        title: "Liber",
+        year: "2025", cat: "B2B Marketing",
+        thumb: "assets/Projects/Liber/08d265f3-b5b8-4290-86b8-f375a70c224f_rw_1920.png"
+      },
+      {
+        slug: "cin-cin",
+        title: "CIN CIN Sapore da Brindare",
+        year: "2025", cat: "Restaurant Branding",
+        thumb: "assets/Projects/Cin Cin /Prancheta 1.png"
+      },
+      {
+        slug: "parallax",
+        title: "Parallax",
+        year: "2025", cat: "Creative Studio",
+        thumb: "assets/Projects/Liber/Parallax/01-thumbnail.gif"
+      },
+      {
+        slug: "stine",
+        title: "Stine",
+        year: "2025", cat: "Brand Guidelines",
+        thumb: "assets/Projects/stine/pages/page-01.png"
+      }
+    ];
+
+    const grid = document.getElementById('grid');
+    PROJECTS.forEach((p, i) => {
+      const card = document.createElement('a');
+      card.className = 'card reveal reveal--scale';
+      // stagger by column pair so rows cascade in nicely
+      card.style.setProperty('--reveal-delay', (i % 2) * 90 + 'ms');
+      card.href = `project.html?id=${p.slug}`;
+
+      const thumbHTML = p.slides
+        ? `<div class="slideshow-wrap">
+            ${p.slides.map((src, i) =>
+              `<img class="slide-img${i === 0 ? ' active' : ''}" src="${ep(src)}" alt="${p.title}" loading="${i < 2 ? 'eager' : 'lazy'}" />`
+            ).join('')}
+          </div>`
+        : `<div class="card-thumb-wrap">
+            <img class="card-thumb" src="${ep(p.thumb)}" alt="${p.title}" loading="lazy"
+                 onerror="this.classList.add('broken')" />
+          </div>`;
+
+      card.innerHTML = `
+        ${thumbHTML}
+        <div class="card-body">
+          <p class="card-year">${p.year}</p>
+          <p class="card-name">${p.title}</p>
+          <p class="card-cat">${p.cat}</p>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    // init slideshows
+    document.querySelectorAll('.slideshow-wrap').forEach(wrap => {
+      const imgs = Array.from(wrap.querySelectorAll('.slide-img'));
+      if (imgs.length < 2) return;
+      let idx = 0;
+      setInterval(() => {
+        imgs[idx].classList.remove('active');
+        idx = (idx + 1) % imgs.length;
+        imgs[idx].classList.add('active');
+      }, 2400);
+    });
+
+    // typing animation — cycles between phrase pairs
+    (function () {
+      const PHRASES = [
+        ['Solve for one', 'Expand to many'],
+        ['Marketing', 'end-to-end']
+      ];
+      const el1 = document.getElementById('type-line1');
+      const el2 = document.getElementById('type-line2');
+
+      // respect reduced-motion: show the headline statically, no typing loop
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el1.textContent = PHRASES[0][0];
+        el2.textContent = PHRASES[0][1];
+        return;
+      }
+
+      const wait = ms => new Promise(r => setTimeout(r, ms));
+      let t1 = '', t2 = '', curLine = 1;
+
+      function render() {
+        const c = '<span class="type-cursor"></span>';
+        el1.innerHTML = t1 + (curLine === 1 ? c : '');
+        el2.innerHTML = t2 + (curLine === 2 ? c : '');
+      }
+
+      async function run() {
+        let i = 0;
+        await wait(300);
+        while (true) {
+          const [l1, l2] = PHRASES[i];
+          t1 = ''; t2 = ''; curLine = 1; render();
+
+          for (const ch of l1) { t1 += ch; render(); await wait(65); }
+          curLine = 2; render(); await wait(110);
+          for (const ch of l2) { t2 += ch; render(); await wait(65); }
+
+          await wait(3400);
+
+          while (t2.length) { t2 = t2.slice(0, -1); render(); await wait(28); }
+          curLine = 1; render(); await wait(110);
+          while (t1.length) { t1 = t1.slice(0, -1); render(); await wait(28); }
+
+          await wait(380);
+          i = (i + 1) % PHRASES.length;
+        }
+      }
+      run();
+    })();
+
+    // ── CLIENTS MARQUEE ──────────────────
+    (function () {
+      const row1El = document.getElementById('clients-row1');
+      const row2El = document.getElementById('clients-row2');
+      if (!row1El || !row2El) return;
+      const DIR = 'assets/clients /';
+      // {f: file, name, invert: true for white/negative logos}
+      const CLIENTS = [
+        { f: 'Microsoft-logo_rgb_c-gray.png', name: 'Microsoft', scale: 1.4 },
+        { f: 'Principal_h_cor_RGB.png', name: 'Principal' },
+        { f: 'eletrobras-logo-png_seeklogo-530206.png', name: 'Eletrobras', scale: 2.1 },
+        { f: 'rumo-seeklogo.png', name: 'Rumo' },
+        { f: 'vilmorin.webp', name: 'Vilmorin' },
+        { f: 'Content.png.webp', name: 'Husiero', invert: true },
+        { f: 'logo_automatize_original-2-1-min.png', name: 'Automatize' },
+        { f: 'logo-popular-pet-petshop-online.png', name: 'Popular Pet' },
+        { f: 'DesktopNegative.svg', name: 'LATAM', invert: true },
+        { f: 'Logo.dc575c7b.svg', name: 'Oakberry', invert: true },
+        { f: 'logo.9a1a4799.png', name: 'COP30 Brasil' }
+      ];
+      const cells = list => list.map(c =>
+        `<div class="client-cell"><img class="client-logo${c.invert ? ' client-logo--invert' : ''}" ` +
+        `src="${ep(DIR + c.f)}" alt="${c.name}" loading="lazy" draggable="false"` +
+        `${c.scale ? ` style="transform:scale(${c.scale})"` : ''}></div>`
+      ).join('');
+      const mid = Math.ceil(CLIENTS.length / 2);
+      const row1 = CLIENTS.slice(0, mid);
+      const row2 = CLIENTS.slice(mid);
+      // duplicate each row → seamless 50% loop
+      row1El.innerHTML = cells(row1) + cells(row1);
+      row2El.innerHTML = cells(row2) + cells(row2);
+    })();
+
+    // ── EXPERIENCE DAY COUNTER ───────────
+    (function () {
+      const el = document.getElementById('tl-days');
+      if (!el) return;
+      const START = new Date('2018-01-01').getTime();
+      const fmt = n => n.toLocaleString('pt-BR');
+      const total = () => Math.floor((Date.now() - START) / 86400000);
+      let animating = false;
+
+      // keep the number current without a reload (rolls over at midnight)
+      const setLive = () => { if (!animating) el.textContent = fmt(total()); };
+      setInterval(setLive, 60000);
+
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) { setLive(); return; }
+
+      let done = false;
+      const io = new IntersectionObserver((entries) => {
+        if (!entries[0].isIntersecting || done) return;
+        done = true; io.disconnect();
+        animating = true;
+        const target = total();
+        let n = 0; const step = Math.ceil(target / 55);
+        const t = setInterval(() => {
+          n = Math.min(n + step, target);
+          el.textContent = fmt(n);
+          if (n >= target) { clearInterval(t); animating = false; }
+        }, 16);
+      }, { threshold: 0.4 });
+      io.observe(el);
+    })();
+
+    // ── SCROLL REVEAL ────────────────────
+    (function () {
+      const items = document.querySelectorAll('.reveal');
+      if (!items.length) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) {
+        items.forEach(el => el.classList.add('in'));
+        return;
+      }
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(en => {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -8% 0px' });
+      items.forEach(el => io.observe(el));
+    })();
+
+    // nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 10), { passive: true });
+
+    // live clock
+    const clockEl = document.getElementById('hero-clock');
+    function tick() {
+      clockEl.textContent = new Date().toLocaleTimeString('en-US', {
+        timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+      });
+    }
+    tick(); setInterval(tick, 1000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project — Bernardo Blom</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f2f2f2;
+      --bg-alt: #e8e8e8;
+      --text: #0d0d0d;
+      --muted: #71717a;
+      --accent: #00b37e;
+      --border: #d8d8d8;
+      --nav-h: 68px;
+      --max-w: 1280px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg); color: var(--text);
+      line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ─────────────────────────────── */
+    nav {
+      position: fixed; inset: 0 0 auto 0;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(20px, 5vw, 64px);
+      background: rgba(242,242,242,.88);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border); z-index: 100;
+    }
+    .nav-back {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-back:hover { color: var(--text); }
+    .nav-back svg { transition: transform .2s; }
+    .nav-back:hover svg { transform: translateX(-3px); }
+    .nav-logo {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 13px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--text); text-decoration: none;
+    }
+
+    /* ── LAYOUT ──────────────────────────── */
+    .page {
+      max-width: var(--max-w); margin: 0 auto;
+      padding: calc(var(--nav-h) + 64px) clamp(20px, 5vw, 64px) 120px;
+    }
+
+    /* ── HEADER ──────────────────────────── */
+    .project-header { margin-bottom: 56px; }
+
+    .project-meta { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+    .meta-year { font-size: 11px; font-weight: 700; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted); }
+    .meta-dot  { width: 3px; height: 3px; border-radius: 50%; background: var(--border); }
+    .meta-cat  { font-size: 11px; font-weight: 700; letter-spacing: 1.4px; text-transform: uppercase; color: var(--accent); }
+
+    .project-title {
+      font-size: clamp(36px, 6vw, 80px); font-weight: 800;
+      letter-spacing: -2.5px; line-height: .95; color: var(--text); margin-bottom: 22px;
+    }
+    .project-desc { font-size: clamp(15px, 1.4vw, 17px); color: var(--muted); line-height: 1.75; max-width: 640px; }
+
+    /* ── GALLERY ─────────────────────────── */
+    .gallery { display: flex; flex-direction: column; gap: 10px; }
+
+    .gallery-video-wrap {
+      width: 100%; aspect-ratio: 16/9;
+      border-radius: 16px; overflow: hidden; background: #000;
+    }
+    .gallery-video-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+    .gallery-img-wrap { width: 100%; border-radius: 16px; overflow: hidden; background: var(--bg-alt); }
+    .gallery-img { display: block; width: 100%; height: auto; }
+
+    /* ── NOT FOUND ───────────────────────── */
+    .not-found {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; min-height: 60svh; text-align: center; gap: 14px;
+    }
+    .not-found h2 { font-size: 28px; font-weight: 800; letter-spacing: -1px; color: var(--text); }
+    .not-found p  { font-size: 14px; color: var(--muted); }
+    .not-found a  { font-size: 13px; font-weight: 600; color: var(--accent); text-decoration: none; border-bottom: 1.5px solid var(--accent); padding-bottom: 2px; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-back">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M12 7H2M6 2.5L2 7l4 4.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      All Projects
+    </a>
+    <a href="index.html" class="nav-logo">Bernardo Blom</a>
+  </nav>
+
+  <div class="page" id="page"></div>
+
+  <script>
+    function ep(raw) {
+      if (raw.startsWith('http')) return raw;
+      return raw.split('/').map(encodeURIComponent).join('/');
+    }
+
+    const PROJECTS = [
+      {
+        slug: "latam-airlines",
+        title: "LATAM Airlines",
+        year: "2026", cat: "Brand & Marketing",
+        desc: "B2B marketing and design project for LATAM Airlines, developing visual assets and brand communication materials for the airline's enterprise campaigns.",
+        images: [
+          "assets/Projects/latam /Prancheta 1.png",
+          "assets/Projects/latam /Prancheta 2.png",
+          "assets/Projects/latam /Prancheta 3.png",
+          "assets/Projects/latam /Prancheta 4.png",
+          "assets/Projects/latam /Prancheta 5.png",
+          "assets/Projects/latam /Prancheta 6.png",
+          "assets/Projects/latam /Prancheta 7.png"
+        ]
+      },
+      {
+        slug: "latam-ui-design",
+        title: "LATAM Airlines — UI Design",
+        year: "2025", cat: "UI Design",
+        desc: "UI design project for LATAM Airlines, developing interface concepts and digital experience designs for the airline's digital ecosystem.",
+        images: [
+          "assets/Projects/LATAM airlines UI Design/500fc013-2c1f-4a28-85bc-b31646df5b29_rw_1920.png",
+          "assets/Projects/LATAM airlines UI Design/96c60109-49bf-4d6f-9876-00a1b2df9fee_rw_1920.png"
+        ]
+      },
+      {
+        slug: "essenza",
+        title: "Essenza",
+        year: "2025", cat: "Brand Identity",
+        desc: "Brand identity and visual design system for Essenza. The project focused on creating a cohesive identity that communicates elegance and authenticity.",
+        images: [
+          "assets/Projects/essenza/01-thumbnail.png",
+          "assets/Projects/essenza/02.png",
+          "assets/Projects/essenza/03.png",
+          "assets/Projects/essenza/04.png",
+          "assets/Projects/essenza/05.png",
+          "assets/Projects/essenza/06.png",
+          "assets/Projects/essenza/07.png"
+        ]
+      },
+      {
+        slug: "sismad",
+        title: "SISMAD",
+        year: "2025", cat: "B2B Marketing",
+        desc: "B2B design and marketing project for SISMAD, creating visual strategy and communication assets aligned with enterprise market positioning.",
+        images: [
+          "assets/Projects/sismad/01-thumbnail.png",
+          "assets/Projects/sismad/02.png",
+          "assets/Projects/sismad/03.png",
+          "assets/Projects/sismad/04.png",
+          "assets/Projects/sismad/05.png",
+          "assets/Projects/sismad/06.png"
+        ]
+      },
+      {
+        slug: "lme-incorporadora",
+        title: "LME Incorporadora",
+        year: "2025", cat: "Real Estate Branding",
+        desc: "Visual identity and marketing materials for LME Incorporadora, positioning the real estate brand with a strong and trustworthy presence in the market.",
+        images: [
+          "assets/Projects/lme-incorporadora/05dcb03b-d1d1-4de9-8139-86ddc3089288_rw_1920.png",
+          "assets/Projects/lme-incorporadora/0d79f52a-514e-4f91-9ac6-8c9bbab1fb7b_rw_1920.png",
+          "assets/Projects/lme-incorporadora/1beba2a7-7a94-48ec-bcc6-72e270f261ba_rw_1920.png",
+          "assets/Projects/lme-incorporadora/253446aa-a429-4b27-bda7-1f9d910fd0ce_rw_1920.png",
+          "assets/Projects/lme-incorporadora/48aa3dfe-050e-4601-b45e-86828a7bdbd2_rw_1920.png",
+          "assets/Projects/lme-incorporadora/4e2532be-9c5b-4397-bad9-62875798e68b_rw_1920.png",
+          "assets/Projects/lme-incorporadora/72c6b0a7-a6da-480e-abf5-db51fa3c9b68_rw_1920.png",
+          "assets/Projects/lme-incorporadora/76c686e8-dbc0-41c2-bb1b-f69340c7406f_rw_1920.png",
+          "assets/Projects/lme-incorporadora/b1c88f95-a6e6-42ef-8044-279f379795e3_rw_1920.png",
+          "assets/Projects/lme-incorporadora/da5a03fc-a8ed-4d09-91d6-18589b722236_rw_1920.png",
+          "assets/Projects/lme-incorporadora/ef00c2f8-a3d0-43c0-8478-e038e0ba32a2_rw_1920.png"
+        ]
+      },
+      {
+        slug: "tecnoly",
+        title: "Tecnoly",
+        year: "2025", cat: "Technology Branding",
+        desc: "Branding for Tecnoly, a Brazilian technology company founded in 2004 in São José dos Campos. Specialized in technology, engineering and urban mobility — IT, custom software, CCTV and traffic management.",
+        images: [
+          "assets/Projects/tecnoly/01-thumbnail.gif",
+          "assets/Projects/tecnoly/Frame 33.jpg",
+          "assets/Projects/tecnoly/Frame 34.jpg",
+          "assets/Projects/tecnoly/Frame 37.jpg",
+          "assets/Projects/tecnoly/Frame 38.jpg",
+          "assets/Projects/tecnoly/Frame 38.png",
+          "assets/Projects/tecnoly/Frame 41.jpg",
+          "assets/Projects/tecnoly/Frame 42.jpg",
+          "assets/Projects/tecnoly/Slide 16_9 - 21.png"
+        ]
+      },
+      {
+        slug: "viacel",
+        title: "Viacel",
+        year: "2025", cat: "Visual Identity",
+        desc: "Visual identity system for Viacel, an automated toll payment technology. Modern and minimalist logotype symbolizing movement, connectivity and progress. Green tones convey trust, sustainability and technology. Client: Kalts / Tecnoly.",
+        images: [
+          "assets/Projects/viacel/behance_Prancheta 1.png",
+          "assets/Projects/viacel/behance_Prancheta 1 cópia.png",
+          "assets/Projects/viacel/behance_Prancheta 1 cópia 2.png",
+          "assets/Projects/viacel/behance_Prancheta 1 cópia 3.png",
+          "assets/Projects/viacel/behance_Prancheta 1 cópia 4.png",
+          "assets/Projects/viacel/behance_Prancheta 1 cópia 5.png",
+          "assets/Projects/viacel/behance_Prancheta 1 cópia 6.png"
+        ]
+      },
+      {
+        slug: "safeway",
+        title: "Safeway",
+        year: "2025", cat: "SaaS · Road Safety",
+        desc: "Brand and design for Safeway, a road safety software that monitors driver behavior, analyzes data and delivers personalized training. Client: Tecnoly. Art Direction & Design: Bernardo Blom. Creative Direction: Natan Sá.",
+        video: "https://www.youtube.com/embed/TmALlDes6Tc",
+        images: [
+          "assets/Projects/Safeway/Title 1.gif",
+          "assets/Projects/Safeway/Assinatura Sfw.gif",
+          "assets/Projects/Safeway/Cores Logo.gif",
+          "assets/Projects/Safeway/Fonte Sora.gif",
+          "assets/Projects/Safeway/Carrossel.gif",
+          "assets/Projects/Safeway/2669f6ea-9afc-4048-96c4-86803d73ff86_rw_1920.gif",
+          "assets/Projects/Safeway/79b4b242-a002-4c7d-b198-28fda20ace5c_rw_1920.gif",
+          "assets/Projects/Safeway/61981cee-48ef-46b1-b4e1-f29fb6241f7e_rw_1920.jpg",
+          "assets/Projects/Safeway/92842729-604c-4bed-b71f-c62fc4227e84_rw_1920.jpg",
+          "assets/Projects/Safeway/c031ee5a-b210-4b67-b176-4533a2954ba0_rw_1920.jpg",
+          "assets/Projects/Safeway/cfd58909-d7c7-4533-bfb0-7618e3c829a1_rw_1920.jpg",
+          "assets/Projects/Safeway/f9e5b05d-e05c-4799-af4e-af71364d051f_rw_1920.jpg"
+        ]
+      },
+      {
+        slug: "liber",
+        title: "Liber",
+        year: "2025", cat: "B2B Marketing",
+        desc: "B2B design and marketing project for Liber, developing strategic visual communication and campaign assets for the brand.",
+        images: [
+          "assets/Projects/Liber/08d265f3-b5b8-4290-86b8-f375a70c224f_rw_1920.png",
+          "assets/Projects/Liber/0ecf9f27-ec7f-494f-a83e-9707785d6543_rw_1920.png",
+          "assets/Projects/Liber/30d76d9b-43c6-4d92-a13e-a51ed26efb8e_rw_1920.png",
+          "assets/Projects/Liber/656846a9-8b53-4110-b08f-6f8d5dd0f826_rw_1920.png",
+          "assets/Projects/Liber/6f05fd37-b192-4f7a-ab7e-797633dcd028_rw_1920.png",
+          "assets/Projects/Liber/c3724b2b-a0c6-4ec1-b8a0-822ebacbc145_rw_1920.png",
+          "assets/Projects/Liber/d1734efb-f281-4a59-b1d1-6aabcfd98052_rw_1920.png"
+        ]
+      },
+      {
+        slug: "cin-cin",
+        title: "CIN CIN Sapore da Brindare",
+        year: "2025", cat: "Restaurant Branding",
+        desc: "Branding for CIN CIN Sapore da Brindare, celebrating Italian culinary tradition and the art of toasting. The design conveys sophistication, warmth and authenticity.",
+        images: [
+          "assets/Projects/Cin Cin /Prancheta 1.png",
+          "assets/Projects/Cin Cin /Prancheta 2.png",
+          "assets/Projects/Cin Cin /Prancheta 3.png",
+          "assets/Projects/Cin Cin /Prancheta 4.png",
+          "assets/Projects/Cin Cin /Prancheta 5.png",
+          "assets/Projects/Cin Cin /Prancheta 6.png",
+          "assets/Projects/Cin Cin /banner.png",
+          "assets/Projects/Cin Cin /Restaurant-Wall-Poster-Mockup.jpg",
+          "assets/Projects/Cin Cin /logo-paper.jpg",
+          "assets/Projects/Cin Cin /logo-draw01-02.png",
+          "assets/Projects/Cin Cin /logo-draw01-03.png",
+          "assets/Projects/Cin Cin /logo-draw01-04.png",
+          "assets/Projects/Cin Cin /logo-draw01-05.png",
+          "assets/Projects/Cin Cin /logo-draw01-10.png",
+          "assets/Projects/Cin Cin /logo-draw01_Prancheta 1.png",
+          "assets/Projects/Cin Cin /logo-draw01_Prancheta 1 cópia.png",
+          "assets/Projects/Cin Cin /logo-draw01_Prancheta 1 cópia 2.png",
+          "assets/Projects/Cin Cin /logo-draw01_Prancheta 1 cópia 3.png",
+          "assets/Projects/Cin Cin /logo-draw01_Prancheta 1 cópia 4.png"
+        ]
+      },
+      {
+        slug: "parallax",
+        title: "Parallax",
+        year: "2025", cat: "Creative Studio",
+        desc: "Identity for Parallax, a creative studio specializing in advertising campaigns with a modernist aesthetic — from production to post-production. Art Direction & Design: Bernardo Blom. Motion & Creative Direction: Natan Sá.",
+        images: [
+          "assets/Projects/Liber/Parallax/01-thumbnail.gif",
+          "assets/Projects/Liber/Parallax/02.png",
+          "assets/Projects/Liber/Parallax/03.png",
+          "assets/Projects/Liber/Parallax/04.png",
+          "assets/Projects/Liber/Parallax/05.png",
+          "assets/Projects/Liber/Parallax/06.png",
+          "assets/Projects/Liber/Parallax/07.png"
+        ]
+      },
+      {
+        slug: "stine",
+        title: "Stine",
+        year: "2025", cat: "Brand Guidelines",
+        desc: "Complete brand guidelines for Stine 2025. A comprehensive 32-page identity manual covering logo system, color palette, typography and brand applications across all touchpoints.",
+        images: Array.from({length: 32}, (_, i) => `assets/Projects/stine/pages/page-${String(i+1).padStart(2,'0')}.png`)
+      }
+    ];
+
+    const id      = new URLSearchParams(location.search).get('id');
+    const project = PROJECTS.find(pr => pr.slug === id);
+    const page    = document.getElementById('page');
+
+    if (!project) {
+      page.innerHTML = `
+        <div class="not-found">
+          <h2>Project not found</h2>
+          <p>This project doesn't exist or the link is incorrect.</p>
+          <a href="index.html">← Back to portfolio</a>
+        </div>`;
+    } else {
+      document.title = `${project.title} — Bernardo Blom`;
+
+      const videoHTML = project.video
+        ? `<div class="gallery-video-wrap">
+             <iframe src="${project.video}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+           </div>`
+        : '';
+
+      const imagesHTML = project.images
+        .map(src => `<div class="gallery-img-wrap">
+          <img class="gallery-img" src="${ep(src)}" alt="${project.title}" loading="lazy" />
+        </div>`)
+        .join('\n');
+
+      page.innerHTML = `
+        <div class="project-header">
+          <div class="project-meta">
+            <span class="meta-year">${project.year}</span>
+            <span class="meta-dot"></span>
+            <span class="meta-cat">${project.cat}</span>
+          </div>
+          <h1 class="project-title">${project.title}</h1>
+          <p class="project-desc">${project.desc}</p>
+        </div>
+        <div class="gallery">
+          ${videoHTML}
+          ${imagesHTML}
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
