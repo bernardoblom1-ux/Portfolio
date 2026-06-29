@@ -987,6 +987,9 @@
       });
     }
     tick(); setInterval(tick, 1000);
+
+    // garante abertura no topo em qualquer cenário (restauração de scroll do browser)
+    window.addEventListener('load', () => window.scrollTo({ top: 0, behavior: 'instant' }));
   </script>
 </body>
 </html>
