@@ -435,7 +435,11 @@
     }
     footer p { font-size: 13px; color: var(--muted); }
   </style>
-  <script>document.documentElement.classList.add('js');</script>
+  <script>
+    document.documentElement.classList.add('js');
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+  </script>
 </head>
 <body>
 
